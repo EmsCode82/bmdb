@@ -7,17 +7,25 @@ public class Credit {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	private String actorId;
-	private String movieId;
+	// this should really be an Actor, not actorID
+	//private String actorId;
+	@ManyToOne
+	@JoinColumn(name="ActorID")
+	private Actor actor;
+	// this should really be a Movie, not movieID
+	//private String movieId;
+	@ManyToOne
+	@JoinColumn(name="MovieID")
+	private Movie movie;
 	private String role;
 	public Credit() {
 		super();
 	}
-	public Credit(int id, String actorid, String movieid, String role) {
+	public Credit(int id, Actor actor, Movie movie, String role) {
 		super();
 		this.id = id;
-		this.actorId = actorid;
-		this.movieId = movieid;
+		this.actor = actor;
+		this.movie = movie;
 		this.role = role;
 	}
 	public int getId() {
@@ -26,17 +34,17 @@ public class Credit {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getActorid() {
-		return actorId;
+	public Actor getActor() {
+		return actor;
 	}
-	public void setActorid(String actorid) {
-		this.actorId = actorid;
+	public void setActor(Actor actor) {
+		this.actor = actor;
 	}
-	public String getMovieid() {
-		return movieId;
+	public Movie getMovie() {
+		return movie;
 	}
-	public void setMovieid(String movieid) {
-		this.movieId = movieid;
+	public void setMovieid(Movie movie) {
+		this.movie = movie;
 	}
 	public String getRole() {
 		return role;
@@ -46,7 +54,7 @@ public class Credit {
 	}
 	@Override
 	public String toString() {
-		return "Credit [id=" + id + ", actorid=" + actorId + ", movieid=" + movieId + ", role=" + role + "]";
+		return "Credit [id=" + id + ", actorid=" + actor + ", movieid=" + movie + ", role=" + role + "]";
 	}
 	
 }

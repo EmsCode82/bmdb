@@ -14,13 +14,13 @@ public class Actor {
 	public Actor() {
 		super();
 	}
-	public Actor(int id, String firstname, String lastname, String gender, String birthdate) {
+	public Actor(int id, String firstName, String lastName, String gender, String birthDate) {
 		super();
 		this.id = id;
-		this.firstName = firstname;
-		this.lastName = lastname;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.gender = gender;
-		this.birthDate = birthdate;
+		this.birthDate = birthDate;
 	}
 	public int getId() {
 		return id;
@@ -28,17 +28,17 @@ public class Actor {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getFirstname() {
+	public String getFirstName() {
 		return firstName;
 	}
-	public void setFirstname(String firstname) {
-		this.firstName = firstname;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
-	public String getLastname() {
+	public String getLastName() {
 		return lastName;
 	}
-	public void setLastname(String lastname) {
-		this.lastName = lastname;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	public String getGender() {
 		return gender;
@@ -46,16 +46,15 @@ public class Actor {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public String getBirthdate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
-	public void setBirthdate(String birthdate) {
-		this.birthDate = birthdate;
+	public void setBirthDate(String birthDate) {
+		this.birthDate = birthDate;
 	}
 	@Override
 	public String toString() {
-		return "Actor [id=" + id + ", firstname=" + firstName + ", lastname=" + lastName + ", gender=" + gender
-				+ ", birthdate=" + birthDate + "]";
+		return "Actor [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
+				+ ", birthDate=" + birthDate + "]";
 	}
-	
 }

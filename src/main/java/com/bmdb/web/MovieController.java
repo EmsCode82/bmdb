@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
+import com.bmdb.business.JsonResponse;
 import com.bmdb.business.Movie;
 import com.bmdb.db.MovieRepository;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
@@ -16,14 +19,84 @@ public class MovieController {
 	private MovieRepository movieRepo;
 	
 	@GetMapping("/")
-	public List<Movie> list() {
-		List<Movie> movies = movieRepo.findAll();		
-		return movies;
+	public JsonResponse list() {
+		JsonResponse jr = null;
+		List<Movie> movies = movieRepo.findAll();
+		if (movies.size()>0) {
+			jr = JsonResponse.getInstance(movies);			
+		}
+		else {
+			jr = JsonResponse.getErrorInstance("No movies found.");
+		}
+		return jr;
 	}
 	
 	@GetMapping("/{id}")
-	public Movie get(@PathVariable int id) {
-		Optional <Movie> movie = movieRepo.findById(id);		
-		return movie.get();
+	public JsonResponse get(@PathVariable int id) {
+		// expected responses?
+		// 1 - a single movie
+		// 2 - bad id - no movie found
+		// 3 - exception?? - hold off for now implement
+		//					 exception handling as needed
+		JsonResponse jr = null;
+		Optional <Movie> movie = movieRepo.findById(id);
+		if (movie.isPresent()) {
+			jr = JsonResponse.getInstance(movie.get());
+		}
+		else {
+			jr = JsonResponse.getErrorInstance("No Movie found for Id." +id);
+		}
+		return jr;
+	}
+	
+	// 'create' method
+	@PostMapping("/")
+	public JsonResponse createMovie(@RequestBody Movie m) {
+		JsonResponse jr = null;
+		
+		try {
+			m = movieRepo.save(m);
+			jr = JsonResponse.getInstance(m);			
+		}
+		catch (DataIntegrityViolationException dive) {
+			jr = JsonResponse.getErrorInstance(dive.getRootCause().getMessage());
+			dive.printStackTrace();
+		}
+		catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error creating movie: "+e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return jr;
+	}
+	
+	@PutMapping("/")
+	public JsonResponse updateMovie(@RequestBody Movie m) {
+		JsonResponse jr = null;
+		
+		try {
+			m = movieRepo.save(m);
+			jr = JsonResponse.getInstance(m);
+		} catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error updating movie: "+e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return jr;
+	}
+	
+	@DeleteMapping("/{id}")
+	public JsonResponse deleteMovie(@PathVariable int id) {
+		JsonResponse jr = null;
+		
+		try {
+			movieRepo.deleteById(id);
+			jr = JsonResponse.getInstance("Movie id; "+id+" deleted successfully");
+		} catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error deleting movie: "+e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return jr;
 	}
 }
